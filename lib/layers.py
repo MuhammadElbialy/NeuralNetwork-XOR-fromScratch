@@ -26,7 +26,7 @@ class Dense(Layer):
 
     def __init__(self, input_dim, output_dim):
         # Xavier-like initialization
-        limit = np.sqrt(1.0 / input_dim)
+        limit = np.sqrt(1 / input_dim)
         self.W = np.random.uniform(-limit, limit, (input_dim, output_dim))
         self.b = np.zeros((1, output_dim))
 
@@ -51,11 +51,12 @@ class Dense(Layer):
         - db = sum(dL/dY)
         - dX = dL/dY * W^T
         """
-        # Gradients w.r.t. weights and bias
+        batch_size = grad_output.shape[0]
+
+    def backward(self, grad_output):
         self.dW = np.dot(self.inputs.T, grad_output)
         self.db = np.sum(grad_output, axis=0, keepdims=True)
 
-        # Gradient w.r.t. inputs
         grad_input = np.dot(grad_output, self.W.T)
         return grad_input
 
